@@ -1,0 +1,113 @@
+.message-container {
+  height: 70vh;
+  overflow:scroll;
+  padding:0vh 2vw;
+}
+div#chat_container {
+    background: url('/assets/images/background-2.jpg');
+    height: 100vh;
+    position: fixed;
+    width:100% !important;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background:#25017b !important;
+}
+
+body,p {
+    margin: 0px !important;
+}
+.date {
+    font-family: cursive;
+    color: #fff;
+    font-size: 1.4rem;
+    padding: 20px 0px;
+    text-align:center;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+i.fas.fa-exclamation-circle.ms-1.fs-7 {
+    margin-left: 1rem;
+}
+
+.footnote_text {
+    margin: 10px !important;    
+    color: black;
+    background: #fff !important;
+    padding: 10px;
+    border-radius: 10px;
+    width:fit-content;
+}
+
+.footnote_text.active, .message-text.active, :target {
+    box-shadow: 0px 0px 10px 10px #fed;
+}
+.message-text{
+    display:flex;
+    background: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    margin:3px !important;
+    font-family: cursive;
+    align-items:baseline;
+    position:relative;
+}
+.message.right {
+    display: flex;
+    justify-content: end;
+}
+
+.tooltip-image {
+    position: absolute;
+    right: 5px;
+    padding: 5px;
+    background: #fff;
+    bottom: 5px;
+    border-radius: 5px;
+    margin:0px !important;
+}
+
+a.footnote_targeting.inner-message {
+    color: #25017b;
+    margin-left: 1vh;
+}
+
+.message.left {
+    display: flex;
+    justify-content: flex-start;
+}
+#footnote_container {
+    height: 30vh;
+    overflow:scroll;
+    padding: 2vh 2vw;
+    box-shadow: 0px 0px 14px 7px #fff;
+}
+
+
+h1.subtitle {
+    margin: 0px;
+    color: #fff;
+    font-family: cursive;
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 1.4rem !important;
+}
+div#loader {
+    height: 100vh;
+    width: 100vw;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#293ff830;
+}
+.loader-gif{
+  height:100px;
+  width:100px;
+  background:url('/assets/images/newLoader.gif');  
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+
