@@ -1,5 +1,6 @@
 <?php
 $dom = new DOMDocument();
+libxml_use_internal_errors(true);
 if(isset($_REQUEST['file']))
 {
     $file=$_REQUEST['file'];
@@ -10,6 +11,9 @@ else{
 
 $a='html/'.$file.'.html';
 $dom->loadHTMLFile($a);
+
+libxml_clear_errors();
+
 $domx = new DOMXPath($dom);   
 $entries = $domx->evaluate("//td");
 $dateArray = $domx->evaluate("//p");
@@ -20,15 +24,17 @@ for($i=1;$i<2;$i++)
 
 $arr = array();
 foreach ($entries as $key => $entry) {
+    
       $arr[$key]['message_position']=($key%2==0)?'left':'right';
-      $tag=$entry->firstChild->firstChild->firstChild->tagName;
-      $data=$entry->firstChild->firstChild->firstChild;
+      
+      $tag=($entry->firstChild->firstChild->childElementCount>0)?$entry->firstChild->firstChild->firstChild->tagName:"";
+      $data=($entry->firstChild->firstChild->childElementCount>0)?$entry->firstChild->firstChild->firstChild:$entry->firstChild->firstChild;
       $tag1=$entry->firstChild->lastChild->tagName;
       $arr[$key]['footnote_id']=($tag1=='sup')?$entry->firstChild->lastChild->nodeValue:'';
       $arr[$key]['footnote_value']='';
+
       $arr[$key]['message']=($tag=='img')?$data->getAttribute("src"):$data->nodeValue;
       $arr[$key]['message_type']=($tag=='img')?'image':'text';
- 
 }
 $footnotes = $domx->evaluate("//div");
 foreach($footnotes as $key=> $note)
@@ -63,8 +69,9 @@ array_walk($footnoteArray, function($be) use (&$filteredArray) {
 <div class="inner-container message-container">
 <div class="date"><?php echo $date; ?></div>
   <?php foreach($filteredArray as $array) { 
+      $footnote_id='';
   if(!empty($array['message'])){
-      $footnote_id = str_replace(array('[',']'),'',$array[footnote_id]);
+      $footnote_id = str_replace(array('[',']'),'',$array['footnote_id']); 
   ?>
 
 <div class="message <?php echo $array['message_position'] ?>">
@@ -77,14 +84,15 @@ array_walk($footnoteArray, function($be) use (&$filteredArray) {
  </div>
  </div>
 
-<?php } } ?>
+<?php } 
+} ?>
 </div>
 <div id="footnote_container" style="display:none;">
     <div id="handle" class="ui-resizable-handle ui-resizable-n"></div>
     <h1 class="subtitle">Footnotes</h1>
     <?php  foreach($filteredArray as $array) {  
-    if($array[footnote_value]!=""){
-        $footnote_id = str_replace(array('[',']'),'',$array[footnote_id]);
+    if($array['footnote_value']!=""){
+        $footnote_id = str_replace(array('[',']'),'',$array['footnote_id']);
     echo "<p id='footnote_$footnote_id' class='footnote_text' target-section='message_$footnote_id'>$array[footnote_value]</p>";
     }
     }
@@ -179,32 +187,32 @@ array_walk($footnoteArray, function($be) use (&$filteredArray) {
     });
    
    
-    $("#footnote_container").scroll(function() {
-         var $this=$("#footnote_container");
-         var container = $('.message-container');
-         $(this).find(".footnote_text").each(function(e){
+    // $("#footnote_container").scroll(function() {
+    //      var $this=$("#footnote_container");
+    //      var container = $('.message-container');
+    //      $(this).find(".footnote_text").each(function(e){
             
-         var distance = $(this).offset().top;
-        if ( $this.scrollTop() >= distance ) {
-         var target= $(this).attr('target-section'); 
-         $(".message-text").removeClass('active');
-         $("#"+target).addClass('active');
+    //      var distance = $(this).offset().top;
+    //     if ( $this.scrollTop() >= distance ) {
+    //      var target= $(this).attr('target-section'); 
+    //      $(".message-text").removeClass('active');
+    //      $("#"+target).addClass('active');
           
-        var scrollTo = $("#"+target);
+    //     var scrollTo = $("#"+target);
   
-        // Calculating new position of scrollbar
-        var position = scrollTo.offset().top 
-                - container.offset().top 
-                + container.scrollTop();
+    //     // Calculating new position of scrollbar
+    //     var position = scrollTo.offset().top 
+    //             - container.offset().top 
+    //             + container.scrollTop();
   
-        // Setting the value of scrollbar
-        container.scrollTop(position);
+    //     // Setting the value of scrollbar
+    //     container.scrollTop(position);
     
-        } 
+    //     } 
         
-        });
+    //     });
 
-    });
+    // });
      
     
 
